@@ -1,6 +1,7 @@
 
 import subprocess
 import os
+import google.genai.types as types
 
 def run_python_file(working_directory, file_path, args=None):
     try:
@@ -42,3 +43,22 @@ def run_python_file(working_directory, file_path, args=None):
 
     except Exception as e:
         return f"Error: executing Python file: {e}"
+
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Executes the specified Python file, passing any arguments, and returns its output.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Path to target file, relative to the working directory (default is the working directory itself)",
+            ),
+            "args": types.Schema(
+                type=types.Type.STRING,
+                description="Argumens to pass to the Python file as a list of strings",
+            )
+        },
+    ),
+)
